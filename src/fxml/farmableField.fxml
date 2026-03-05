@@ -13,7 +13,7 @@
                 </GridPane>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="inventoryController" minHeight="0.0" minWidth="0.0">
+        <AnchorPane fx:id="inventoryControl" minHeight="0.0" minWidth="0.0">
             <children>
                 <Button fx:id="marketButton" onAction="#openMarket" layoutX="25.0" layoutY="31.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="82.0" text="Marché" />
             </children>

@@ -1,5 +1,7 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +15,7 @@ import java.io.IOException;
 
 public class FarmableField {
     private Market market;
+    private Inventory inventory;
     public Button marketButton;
     private Button[][] field = new Button[20][20];
     private Player player;
@@ -21,12 +24,17 @@ public class FarmableField {
     private boolean[][] isBought = new boolean[15][15];
 
     @FXML public AnchorPane land;
-    @FXML public AnchorPane inventoryController;
+    @FXML public AnchorPane inventoryControl;
     @FXML public GridPane fieldCrop;
 
     public void setPlayer(Player player) {
         this.player = player;
         buttonField();
+
+        // Wait for the interface to load
+        Platform.runLater(() -> {
+            displayInventory();
+        } );
     }
 
     public Button getPlot(int row, int columns) {
@@ -92,6 +100,9 @@ public class FarmableField {
                 marketController.setPlayer(player);
                 marketController.displayMarket();
 
+                //For the refresh of the UI
+                marketController.setFarm(this);
+
                 Stage marketStage = new Stage();
                 marketStage.setTitle("Marché");
                 marketStage.setScene(new Scene(root, 524, 380));
@@ -101,6 +112,29 @@ public class FarmableField {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void displayInventory() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/inventory.fxml"));
+            Node inventoryNode = loader.load();
+
+            this.inventory = loader.getController();
+            this.inventory.setPlayer(player);
+            this.inventory.updateDisplay();
+
+            inventoryControl.getChildren().add(inventoryNode);
+
+            AnchorPane.setLeftAnchor(inventoryNode, 150.0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshInventoryUI() {
+        if (inventory != null) {
+            inventory.updateDisplay();
+        }
     }
 
     public void initialize() {

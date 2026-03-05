@@ -13,14 +13,18 @@ import vegetables.*;
 
 public class Market {
     private Player player;
-    private Vegetables vegetables;
-    private Button acheter;
+    //private Vegetables vegetables;
+    private FarmableField farm;
 
     @FXML private Pane root;
     @FXML private TableView<Vegetables> market;
     @FXML private TableColumn<Vegetables, String> colSeedName;
     @FXML private TableColumn<Vegetables, Integer> colSeedPrice;
     @FXML private TableColumn<Vegetables, Integer> colPriceAfterGrowth;
+
+    public void setFarm(FarmableField farm) {
+        this.farm = farm;
+    }
 
     public void displayMarket() {
         colSeedName.setCellValueFactory(new PropertyValueFactory<>("seedName"));
@@ -56,6 +60,10 @@ public class Market {
         if (select != null && player.money >= select.buyingCost) {
             player.money -= select.buyingCost;
             player.addSeed(select);
+
+            if (farm != null) {
+                farm.refreshInventoryUI();
+            }
         } else {System.out.println("Echec de l'achat");}
     }
 
