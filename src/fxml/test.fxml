@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+  <tabs>
+    <Tab text="Accueil">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="32.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ceci est le texte de ma page d'accueil" wrappingWidth="238.15234375" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Profil">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="73.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ceci est une page de profil" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="Paramètres">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <Text layoutX="61.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ceci est une page de paramètres" />
+               </children></AnchorPane>
+         </content>
+      </Tab>
+  </tabs>
+</TabPane>
