@@ -25,6 +25,7 @@ public abstract class Vegetables {
     }
 
     public String getSeedName() { return seedName; }
+    public String getName() { return name; };
     public int getBuyingCost() { return buyingCost; }
     public int getSellingPrice() { return sellingPrice; }
 }

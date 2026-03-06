@@ -4,11 +4,12 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Market">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Market">
     <children>
-        <TableView fx:id="market" prefHeight="524.0" prefWidth="350.0">
+        <TableView fx:id="market" prefHeight="524.0" prefWidth="450.0">
             <columns>
                 <TableColumn fx:id="colSeedName" prefWidth="150.0" text="Nom de la graine" />
+                <TableColumn fx:id="colVegetableName" prefWidth="100.0" text="Nom du légume" />
                 <TableColumn fx:id="colSeedPrice" prefWidth="100.0" text="Prix d'achat" />
                 <TableColumn fx:id="colPriceAfterGrowth" prefWidth="100.0" text="Prix de vente" />
             </columns>

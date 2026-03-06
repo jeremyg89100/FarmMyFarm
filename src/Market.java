@@ -19,6 +19,7 @@ public class Market {
     @FXML private Pane root;
     @FXML private TableView<Vegetables> market;
     @FXML private TableColumn<Vegetables, String> colSeedName;
+    @FXML private TableColumn<Vegetables, String> colVegetableName;
     @FXML private TableColumn<Vegetables, Integer> colSeedPrice;
     @FXML private TableColumn<Vegetables, Integer> colPriceAfterGrowth;
 
@@ -28,6 +29,7 @@ public class Market {
 
     public void displayMarket() {
         colSeedName.setCellValueFactory(new PropertyValueFactory<>("seedName"));
+        colVegetableName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colSeedPrice.setCellValueFactory(new PropertyValueFactory<>("buyingCost"));
         colPriceAfterGrowth.setCellValueFactory(new PropertyValueFactory<>("sellingPrice"));
 
@@ -48,10 +50,16 @@ public class Market {
 
         Button acheter = new Button("Acheter");
         acheter.setId("acheter");
-        acheter.setLayoutX(400);
-        acheter.setLayoutY(280);
+        acheter.setLayoutX(490);
+        acheter.setLayoutY(100);
         acheter.setOnAction(this::buySeed);
         root.getChildren().add(acheter);
+
+        Button vendre = new Button("Vendre");
+        vendre.setLayoutX(490);
+        vendre.setLayoutY(200);
+        vendre.setOnAction(this::sellVegetables);
+        root.getChildren().add(vendre);
     }
 
     public void buySeed(ActionEvent event) {
@@ -65,6 +73,22 @@ public class Market {
                 farm.refreshInventoryUI();
             }
         } else {System.out.println("Echec de l'achat");}
+    }
+
+    public void sellVegetables(ActionEvent event) {
+        Vegetables select = market.getSelectionModel().getSelectedItem();
+
+        if (select != null) {
+            String name = select.getName();
+            if (player.getVegetableCount(name) > 0) {
+                player.money += select.sellingPrice;
+                player.removeVegetable(name);
+
+                if (farm != null) {
+                    farm.refreshInventoryUI();
+                }
+            } else {System.out.println("Echec de la vente");}
+        }
     }
 
     public void setPlayer(Player player) {

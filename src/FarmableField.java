@@ -10,15 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import vegetables.Vegetables;
 
 import java.io.IOException;
 
 public class FarmableField {
     private Market market;
+    private Player player;
+    private FarmManager manager;
     private Inventory inventory;
     public Button marketButton;
+    private Vegetables vegetables;
     private Button[][] field = new Button[20][20];
-    private Player player;
     private int buyingField = 0;
     private int currentCost = 500;
     private boolean[][] isBought = new boolean[15][15];
@@ -26,6 +29,10 @@ public class FarmableField {
     @FXML public AnchorPane land;
     @FXML public AnchorPane inventoryControl;
     @FXML public GridPane fieldCrop;
+
+    public void setManager(FarmManager manager) {
+        this.manager = manager;
+    }
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -76,18 +83,29 @@ public class FarmableField {
             }
         }
     }
+
     public void buyingField(int row, int columns) {
         Button plot = field[row][columns];
-        if (plot != null && !isBought[row][columns] && player.money > currentCost) {
-            isBought[row][columns] = true;
-            buyingField +=1;
-            player.money -= currentCost;
-            currentCost = 500 + (buyingField * ( 500 * 10 / 100));
-            plot.setGraphic(null);
-            plot.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
-            System.out.println(player.money);
+        if (plot != null && !isBought[row][columns]) {
+            if  (player.money >= currentCost) {
+                isBought[row][columns] = true;
+                buyingField += 1;
+                player.money -= currentCost;
+                currentCost = 500 + (buyingField * (500 * 10 / 100));
+                plot.setGraphic(null);
+                plot.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+                System.out.println(player.money);
+            } else System.out.println("Pas assez d'argent");
         }
-        else System.out.println("Déjà acheté ou pas assez d'argent");
+        else {
+            System.out.println("DEBUG: Clic sur terrain déjà acheté");
+            String seed = manager.getSelectedSeedName();
+            if (seed != null) {
+                manager.plant(row, columns, seed);
+            } else {
+                System.out.println("DEBUG: Aucune graine sélectionnée dans le manager");
+            }
+        }
     }
 
     public void openMarket() {
@@ -105,7 +123,7 @@ public class FarmableField {
 
                 Stage marketStage = new Stage();
                 marketStage.setTitle("Marché");
-                marketStage.setScene(new Scene(root, 524, 380));
+                marketStage.setScene(new Scene(root, 600, 330));
                 marketStage.show();
             } catch (IOException e) {
                 System.err.println("Impossible de charger le fichier FXML");
@@ -121,7 +139,9 @@ public class FarmableField {
 
             this.inventory = loader.getController();
             this.inventory.setPlayer(player);
+            this.inventory.setManager(manager);
             this.inventory.updateDisplay();
+
 
             inventoryControl.getChildren().add(inventoryNode);
 
