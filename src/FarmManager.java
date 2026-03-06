@@ -56,15 +56,19 @@ public class FarmManager {
 
     public void plant(int row, int columns, String userDataName) {
         String fullName = convertUserDataToSeedName(userDataName);
-        if (player.hasSeed(fullName)) {
-            player.useSeed(fullName);
+        if (player.hasSeed(fullName) && farm.getPlot(row, columns).getGraphic() == null) {
             Vegetables newVegetable = createVegetableFromName(fullName);
             setPlotImg(row, columns, "/img/graine.png");
             player.withdrawSeed(fullName);
             growthVegetables(row, columns, newVegetable);
-        }
-        if (farm != null) {
-            farm.refreshInventoryUI();
+
+            if (farm != null) {
+                farm.refreshInventoryUI();
+            }
+        } else if (farm.getPlot(row, columns) != null) {
+            System.out.println("Parcelle déjà occupée");
+        } else {
+            System.out.println("Plus de graine !");
         }
     }
 
@@ -96,6 +100,10 @@ public class FarmManager {
         player.addVegetablesAfterGrowth(vege);
         farm.getPlot(row, columns).setGraphic(null);
         farm.getPlot(row, columns).setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+
+        farm.getPlot(row, columns).setOnAction(event -> {
+            farm.buyingField(row, columns);
+        });
         farm.refreshInventoryUI();
     }
 

@@ -9,6 +9,7 @@
 
 <Pane fx:id="inventory" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inventory">
    <children>
+      <Button fx:id="marketButton" onAction="#openMarket" layoutX="-100.0" layoutY="31.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="82.0" text="Marché" />
       <Text fx:id="tomatoSeed" layoutX="40.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="potatoSeed" layoutX="40.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="beanSeed" layoutX="40.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />

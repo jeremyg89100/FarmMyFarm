@@ -15,6 +15,7 @@ public class Market {
     private Player player;
     //private Vegetables vegetables;
     private FarmableField farm;
+    private Inventory inventory;
 
     @FXML private Pane root;
     @FXML private TableView<Vegetables> market;
@@ -26,6 +27,7 @@ public class Market {
     public void setFarm(FarmableField farm) {
         this.farm = farm;
     }
+    public void setInventory(Inventory inventory) {this.inventory = inventory;}
 
     public void displayMarket() {
         colSeedName.setCellValueFactory(new PropertyValueFactory<>("seedName"));
@@ -83,6 +85,10 @@ public class Market {
             if (player.getVegetableCount(name) > 0) {
                 player.money += select.sellingPrice;
                 player.removeVegetable(name);
+
+                if (inventory != null) {
+                    inventory.updateDisplay();
+                }
 
                 if (farm != null) {
                     farm.refreshInventoryUI();

@@ -47,7 +47,6 @@ public class Player {
 
     public void addVegetablesAfterGrowth(Vegetables vegetables) {
         String name = vegetables.name;
-
         int currentAmount = inventory.getOrDefault(name, 0);
         inventory.put(name, currentAmount + 1);
         System.out.println("Inventaire : " + name + " possède maintenant " + (currentAmount + 1));

@@ -108,30 +108,6 @@ public class FarmableField {
         }
     }
 
-    public void openMarket() {
-        marketButton.setOnMouseClicked(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/market.fxml"));
-                Parent root = loader.load();
-
-                Market marketController = loader.getController();
-                marketController.setPlayer(player);
-                marketController.displayMarket();
-
-                //For the refresh of the UI
-                marketController.setFarm(this);
-
-                Stage marketStage = new Stage();
-                marketStage.setTitle("Marché");
-                marketStage.setScene(new Scene(root, 600, 330));
-                marketStage.show();
-            } catch (IOException e) {
-                System.err.println("Impossible de charger le fichier FXML");
-                e.printStackTrace();
-            }
-        });
-    }
-
     public void displayInventory() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/inventory.fxml"));
@@ -140,6 +116,7 @@ public class FarmableField {
             this.inventory = loader.getController();
             this.inventory.setPlayer(player);
             this.inventory.setManager(manager);
+            this.inventory.setFarm(this);
             this.inventory.updateDisplay();
 
 
@@ -154,6 +131,8 @@ public class FarmableField {
     public void refreshInventoryUI() {
         if (inventory != null) {
             inventory.updateDisplay();
+        } else {
+            System.out.println("ERREUR : L'objet 'inventory' est null dans FarmableField !");
         }
     }
 
