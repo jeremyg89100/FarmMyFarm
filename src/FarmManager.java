@@ -1,20 +1,15 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import vegetables.*;
 
 public class FarmManager {
     private String selectedSeedName = null;
     private FarmableField farm;
-    private Vegetables vegetables;
     private Player player;
-    private Market market;
-    private Inventory inventory;
     private Button[][] field = new Button[20][20];
 
     public void setFarm(FarmableField farm) {
@@ -100,6 +95,8 @@ public class FarmManager {
         player.addVegetablesAfterGrowth(vege);
         farm.getPlot(row, columns).setGraphic(null);
         farm.getPlot(row, columns).setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+
+        farm.getPlot(row, columns).setOnMouseClicked(null);
 
         farm.getPlot(row, columns).setOnAction(event -> {
             farm.buyingField(row, columns);

@@ -33,6 +33,8 @@ public class Player {
 
     public int getVegetableCount(String vegetableName) { return inventory.getOrDefault(vegetableName, 0);}
 
+    public int getMoney() {return this.money;}
+
     public boolean hasSeed(String seedName) {
         return inventory.getOrDefault(seedName, 0) > 0;
     }

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -22,6 +23,8 @@ public class Inventory {
     @FXML Text bellpeper;
     @FXML Text bean;
     @FXML Button marketButton;
+    @FXML Button barnButton;
+    @FXML Text money;
     private Player player;
     private FarmManager manager;
     private FarmableField farm;
@@ -60,7 +63,32 @@ public class Inventory {
         });
     }
 
+    public void openBarn() {
+        barnButton.setOnMouseClicked(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/barn.fxml"));
+                Parent root = loader.load();
+
+                Barn barnController = loader.getController();
+                barnController.setPlayer(player);
+                barnController.setFarm(farm);
+                barnController.setInventory(this);
+//                barnController.displayBarnMarket();
+
+                Stage barnStage = new Stage();
+                barnStage.setTitle("Etabli");
+                barnStage.setScene(new Scene(root, 755, 510));
+                barnStage.show();
+            } catch (IOException e) {
+                System.err.println("Impossible de charger le fichier FXML");
+                e.printStackTrace();
+            }
+        });
+    }
+
     public void updateDisplay() {
+        money.setFont(new Font("System", 20));
+        money.setText(player.getMoney() + " $");
         tomatoSeed.setText("Graine de Tomate x" + player.getSeedCount("Graine de Tomate"));
         eggplantSeed.setText("Graine d'Aubergine x" + player.getSeedCount("Graine d'Aubergine"));
         potatoSeed.setText("Graine de Patate x" + player.getSeedCount("Graine de Patate"));

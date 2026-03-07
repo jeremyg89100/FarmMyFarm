@@ -98,9 +98,9 @@ public class FarmableField {
             } else System.out.println("Pas assez d'argent");
         }
         else {
-            System.out.println("DEBUG: Clic sur terrain déjà acheté");
             String seed = manager.getSelectedSeedName();
-            if (seed != null) {
+            if (seed != null && !seed.isEmpty()) {
+                System.out.println("DEBUG: Essai de plantation " + seed);
                 manager.plant(row, columns, seed);
             } else {
                 System.out.println("DEBUG: Aucune graine sélectionnée dans le manager");

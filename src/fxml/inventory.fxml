@@ -9,13 +9,23 @@
 
 <Pane fx:id="inventory" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="115.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Inventory">
    <children>
-      <Button fx:id="marketButton" onAction="#openMarket" layoutX="-100.0" layoutY="31.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="82.0" text="Marché" />
-      <Text fx:id="tomatoSeed" layoutX="40.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="potatoSeed" layoutX="40.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="beanSeed" layoutX="40.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="bellpeperSeed" layoutX="220.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="eggplantSeed" layoutX="220.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="14.0" layoutY="20.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+      <Button fx:id="marketButton" onAction="#openMarket" layoutX="-120.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="65.0" text="Marché" />
+      <Button fx:id="barnButton" onAction="#openBarn" layoutX="-40.0" layoutY="60.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="65.0" text="Etabli" />
+      <Text fx:id="money" layoutX="-80.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="tomatoSeed" layoutX="90.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="potatoSeed" layoutX="90.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="beanSeed" layoutX="90.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="bellpeperSeed" layoutX="270.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="eggplantSeed" layoutX="270.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="-120.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/graine.png" />
+         </image>
+         <userData>
+            <String fx:value="Money" />
+         </userData>
+      </ImageView>
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="64.0" layoutY="20.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
          </image>
@@ -23,7 +33,7 @@
             <String fx:value="Tomato" />
          </userData>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="14.0" layoutY="49.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="64.0" layoutY="49.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
          </image>
@@ -31,7 +41,7 @@
             <String fx:value="Potato" />
          </userData>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="14.0" layoutY="78.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="64.0" layoutY="78.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
          </image>
@@ -39,7 +49,7 @@
             <String fx:value="Bean" />
          </userData>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="190.0" layoutY="20.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="240.0" layoutY="20.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
          </image>
@@ -47,7 +57,7 @@
             <String fx:value="Bellpeper" />
          </userData>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="190.0" layoutY="49.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="240.0" layoutY="49.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
          </image>
@@ -55,32 +65,32 @@
             <String fx:value="Eggplant" />
          </userData>
       </ImageView>
-      <Text fx:id="tomato" layoutX="430.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="potato" layoutX="430.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="bean" layoutX="430.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="bellpeper" layoutX="560.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="eggplant" layoutX="560.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="400.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" userData="Tomato">
+      <Text fx:id="tomato" layoutX="480.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="potato" layoutX="480.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="bean" layoutX="480.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="bellpeper" layoutX="610.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="eggplant" layoutX="610.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="430.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" userData="Tomato">
          <image>
             <Image url="@../img/tomate.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="400.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" userData="Potato">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="430.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" userData="Potato">
          <image>
             <Image url="@../img/patate.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="400.0" layoutY="78.0" pickOnBounds="true" preserveRatio="true" userData="Bean">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="430" layoutY="78.0" pickOnBounds="true" preserveRatio="true" userData="Bean">
          <image>
             <Image url="@../img/haricot.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="530.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" userData="Bellpeper">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="580.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" userData="Bellpeper">
          <image>
             <Image url="@../img/poivron.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="530.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" userData="Eggplant">
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="580.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" userData="Eggplant">
          <image>
             <Image url="@../img/aubergine.png" />
          </image>
