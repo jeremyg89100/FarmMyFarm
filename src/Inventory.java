@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -16,18 +17,21 @@ public class Inventory {
     @FXML Text eggplantSeed;
     @FXML Text potatoSeed;
     @FXML Text bellpeperSeed;
-    @FXML Text beanSeed;
+    @FXML Text wheatSeed;
     @FXML Text tomato;
     @FXML Text eggplant;
     @FXML Text potato;
     @FXML Text bellpeper;
-    @FXML Text bean;
+    @FXML Text wheat;
     @FXML Button marketButton;
     @FXML Button barnButton;
     @FXML Text money;
+    @FXML Text cornSeed;
+    @FXML Text corn;
     private Player player;
     private FarmManager manager;
     private FarmableField farm;
+    private Barn barn;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -36,6 +40,7 @@ public class Inventory {
     public void setManager(FarmManager manager) {
         this.manager = manager;
     }
+
     public void setFarm(FarmableField farm) {this.farm = farm;}
 
     public void openMarket() {
@@ -73,7 +78,7 @@ public class Inventory {
                 barnController.setPlayer(player);
                 barnController.setFarm(farm);
                 barnController.setInventory(this);
-//                barnController.displayBarnMarket();
+                barnController.updateDisplayBarnInventory();
 
                 Stage barnStage = new Stage();
                 barnStage.setTitle("Etabli");
@@ -93,12 +98,14 @@ public class Inventory {
         eggplantSeed.setText("Graine d'Aubergine x" + player.getSeedCount("Graine d'Aubergine"));
         potatoSeed.setText("Graine de Patate x" + player.getSeedCount("Graine de Patate"));
         bellpeperSeed.setText("Graine de Poivron x" + player.getSeedCount("Graine de Poivron"));
-        beanSeed.setText("Graine de Haricot x" + player.getSeedCount("Graine de Haricot"));
+        wheatSeed.setText("Graine de Blé x" + player.getSeedCount("Graine de Blé"));
+        cornSeed.setText("Graine de Mais x" + player.getSeedCount("Graine de Mais"));
         tomato.setText("Tomate x" + player.getVegetableCount("Tomate"));
-        bean.setText("Haricot x" + player.getVegetableCount("Haricot"));
+        wheat.setText("Blé x" + player.getVegetableCount("Blé"));
         eggplant.setText("Aubergine x" + player.getVegetableCount("Aubergine"));
         bellpeper.setText("Poivron x" + player.getVegetableCount("Poivron"));
         potato.setText("Patate x" + player.getVegetableCount("Patate"));
+        corn.setText("Mais x" + player.getVegetableCount("Mais"));
     }
 
     public void selectSeed(MouseEvent event) {

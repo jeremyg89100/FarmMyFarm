@@ -36,12 +36,6 @@ public class FarmableField {
 
     public void setPlayer(Player player) {
         this.player = player;
-        buttonField();
-
-        // Wait for the interface to load
-        Platform.runLater(() -> {
-            displayInventory();
-        } );
     }
 
     public Button getPlot(int row, int columns) {
@@ -91,6 +85,7 @@ public class FarmableField {
                 isBought[row][columns] = true;
                 buyingField += 1;
                 player.money -= currentCost;
+                refreshInventoryUI();
                 currentCost = 500 + (buyingField * (500 * 10 / 100));
                 plot.setGraphic(null);
                 plot.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
@@ -100,10 +95,10 @@ public class FarmableField {
         else {
             String seed = manager.getSelectedSeedName();
             if (seed != null && !seed.isEmpty()) {
-                System.out.println("DEBUG: Essai de plantation " + seed);
+                System.out.println("Essai de plantation " + seed);
                 manager.plant(row, columns, seed);
             } else {
-                System.out.println("DEBUG: Aucune graine sélectionnée dans le manager");
+                System.out.println("Aucune graine sélectionnée dans le manager");
             }
         }
     }
@@ -137,5 +132,11 @@ public class FarmableField {
     }
 
     public void initialize() {
+        buttonField();
+
+        // Wait for the interface to load
+        Platform.runLater(() -> {
+            displayInventory();
+        } );
     }
 }

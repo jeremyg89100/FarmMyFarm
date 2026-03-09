@@ -21,8 +21,8 @@ public class FarmManager {
     }
 
     public Vegetables createVegetableFromName(String seedName) {
-        if (seedName.equals("Graine de Haricot")) {
-            return new Bean();
+        if (seedName.equals("Graine de Blé")) {
+            return new Wheat();
         }
         if (seedName.equals("Graine de Poivron")) {
             return new BellPeper();
@@ -35,22 +35,27 @@ public class FarmManager {
         }
         if (seedName.equals("Graine de Tomate")) {
             return new Tomato();
-        } else return null;
+        }
+        if(seedName.equals("Graine de Mais")) {
+            return new Corn();
+        }
+            else return null;
     }
 
-    public String convertUserDataToSeedName(String name) {
+    public String convertVegetableNameToSeedName(String name) {
         return switch (name) {
             case "Tomato" -> "Graine de Tomate";
-            case "Bean" -> "Graine de Haricot";
+            case "Wheat" -> "Graine de Blé";
             case "Eggplant" -> "Graine d'Aubergine";
             case "Bellpeper" -> "Graine de Poivron";
             case "Potato" -> "Graine de Patate";
+            case "Corn" -> "Graine de Mais";
             default -> name;
         };
     }
 
-    public void plant(int row, int columns, String userDataName) {
-        String fullName = convertUserDataToSeedName(userDataName);
+    public void plant(int row, int columns, String vegetableName) {
+        String fullName = convertVegetableNameToSeedName(vegetableName);
         if (player.hasSeed(fullName) && farm.getPlot(row, columns).getGraphic() == null) {
             Vegetables newVegetable = createVegetableFromName(fullName);
             setPlotImg(row, columns, "/img/graine.png");
@@ -104,7 +109,7 @@ public class FarmManager {
         farm.refreshInventoryUI();
     }
 
-    private void setPlotImg(int row, int columns, String path) {
+    public void setPlotImg(int row, int columns, String path) {
         Image img = new Image(getClass().getResourceAsStream(path));
         ImageView imgView = new ImageView(img);
         imgView.setFitHeight(20);

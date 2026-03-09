@@ -1,9 +1,6 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -37,18 +34,20 @@ public class Market {
 
         Potato potatoes = new Potato();
         Tomato tomatoes = new Tomato();
-        Bean beans = new Bean();
+        Wheat wheats = new Wheat();
         Eggplant eggplants = new Eggplant();
         BellPeper bellPepers = new BellPeper();
+        Corn corn = new Corn();
 
         market.getItems().add(potatoes);
         market.getItems().add(tomatoes);
-        market.getItems().add(beans);
+        market.getItems().add(wheats);
         market.getItems().add(bellPepers);
         market.getItems().add(eggplants);
+        market.getItems().add(corn);
 
         // Make the height of each cell bigger
-        market.setFixedCellSize(60);
+        market.setFixedCellSize(50);
 
         Button acheter = new Button("Acheter");
         acheter.setId("acheter");

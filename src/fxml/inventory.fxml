@@ -14,9 +14,10 @@
       <Text fx:id="money" layoutX="-80.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="tomatoSeed" layoutX="90.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="potatoSeed" layoutX="90.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="beanSeed" layoutX="90.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="wheatSeed" layoutX="90.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="bellpeperSeed" layoutX="270.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="eggplantSeed" layoutX="270.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="cornSeed" layoutX="270.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="-120.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../img/graine.png" />
@@ -46,7 +47,7 @@
             <Image url="@../img/graine.png" />
          </image>
          <userData>
-            <String fx:value="Bean" />
+            <String fx:value="Wheat" />
          </userData>
       </ImageView>
       <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="240.0" layoutY="20.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
@@ -65,11 +66,20 @@
             <String fx:value="Eggplant" />
          </userData>
       </ImageView>
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="240.0" layoutY="78.0" onMouseClicked="#selectSeed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/graine.png" />
+         </image>
+         <userData>
+            <String fx:value="Corn" />
+         </userData>
+      </ImageView>
       <Text fx:id="tomato" layoutX="480.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="potato" layoutX="480.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="bean" layoutX="480.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="wheat" layoutX="480.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="bellpeper" layoutX="610.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text fx:id="eggplant" layoutX="610.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="corn" layoutX="610.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="430.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" userData="Tomato">
          <image>
             <Image url="@../img/tomate.png" />
@@ -94,6 +104,11 @@
          <image>
             <Image url="@../img/aubergine.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="17.0" fitWidth="23.0" layoutX="580" layoutY="78.0" pickOnBounds="true" preserveRatio="true" userData="Bean">
+      <image>
+         <Image url="@../img/mais.png" />
+      </image>
       </ImageView>
    </children>
 </Pane>

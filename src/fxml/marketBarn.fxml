@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane fx:controller="MarketBarn" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" >
+    <children>
+        <TableView fx:id="market" prefHeight="524.0" prefWidth="450.0">
+            <columns>
+                <TableColumn fx:id="colAnimalName" prefWidth="150.0" text="Nom de l'animal" />
+                <TableColumn fx:id="colResourceName" prefWidth="100.0" text="Nom de la production" />
+                <TableColumn fx:id="colAnimalPrice" prefWidth="100.0" text="Prix d'achat" />
+                <TableColumn fx:id="colResourcePrice" prefWidth="100.0" text="Prix de vente" />
+            </columns>
+        </TableView>
+    </children>
+</Pane>
