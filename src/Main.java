@@ -13,17 +13,8 @@ public class Main extends Application {
 
     public void farmableStage(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/farmableField.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lobby.fxml"));
             Parent root = loader.load();
-
-            FarmableField farmController = loader.getController();
-            Player player = new Player("Jérémy");
-            FarmManager manager = new FarmManager();
-
-            manager.setFarm(farmController);
-            manager.setPlayer(player);
-            farmController.setManager(manager);
-            farmController.setPlayer(player);
 
             primaryStage.setTitle("FarmMyFarm");
             primaryStage.setScene(new Scene(root, 900, 680));

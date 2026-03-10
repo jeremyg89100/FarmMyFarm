@@ -1,16 +1,35 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import vegetables.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FarmManager {
     private String selectedSeedName = null;
     private FarmableField farm;
     private Player player;
+    private Barn barn;
     private Button[][] field = new Button[20][20];
+    private List<PlotSave> currentBarnData = new ArrayList<>();
+    private Barn barnInstance = null;
+
+    public void updateBarnData(List<PlotSave> data) {
+        this.currentBarnData = data;
+    }
+
+    public List<PlotSave> getBarnData() {
+        return this.currentBarnData;
+    }
 
     public void setFarm(FarmableField farm) {
         this.farm = farm;
@@ -18,6 +37,31 @@ public class FarmManager {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void setBarn(Barn barn) { this.barn = barn; }
+
+    public Barn getOrCreateBarn(Player player, FarmableField farm, Inventory inventory) {
+        System.out.println("FarmManager instance = " + this.hashCode());
+        System.out.println("barnInstance = " + barnInstance);
+        if (barnInstance == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/barn.fxml"));
+                Parent root = loader.load();
+                barnInstance = loader.getController();
+                barnInstance.initData(player, farm, inventory);
+                barnInstance.setManager(this);
+
+                Stage barnStage = new Stage();
+                barnStage.setTitle("Etabli");
+                barnStage.setScene(new Scene(root, 755, 510));
+                barnStage.setOnCloseRequest(e -> barnStage.hide()); // hide instead of destroy
+                barnInstance.setStage(barnStage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return barnInstance;
     }
 
     public Vegetables createVegetableFromName(String seedName) {
@@ -56,7 +100,10 @@ public class FarmManager {
 
     public void plant(int row, int columns, String vegetableName) {
         String fullName = convertVegetableNameToSeedName(vegetableName);
+
         if (player.hasSeed(fullName) && farm.getPlot(row, columns).getGraphic() == null) {
+            PlotState state = new PlotState(vegetableName, 0);
+            farm.getPlot(row, columns).setUserData(state);
             Vegetables newVegetable = createVegetableFromName(fullName);
             setPlotImg(row, columns, "/img/graine.png");
             player.withdrawSeed(fullName);
@@ -75,6 +122,11 @@ public class FarmManager {
     public void growthVegetables(int row, int columns, Vegetables vege) {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             vege.currentGrowth++;
+
+            PlotState state = (PlotState) farm.getPlot(row, columns).getUserData();
+            if (state != null) {
+                state.currentGrowth = vege.currentGrowth;
+            }
             if (vege.currentGrowth == vege.growthTime / 3) {
                 setPlotImg(row, columns, "/img/pousse.png");
             }
@@ -107,6 +159,9 @@ public class FarmManager {
             farm.buyingField(row, columns);
         });
         farm.refreshInventoryUI();
+        if (barnInstance != null) {
+            barnInstance.updateDisplayBarnInventory();
+        }
     }
 
     public void setPlotImg(int row, int columns, String path) {
@@ -123,5 +178,25 @@ public class FarmManager {
 
     public String getSelectedSeedName() {
         return this.selectedSeedName;
+    }
+
+    //Restore
+    public void loadGame(String fileName) {
+        GameSaver loader = new GameSaver();
+        SaveData data = loader.loadAll(fileName);
+
+        if (data != null) {
+            this.player.setName(data.playerName);
+            this.player.setMoney(data.money);
+            this.player.restoreInventory(data.inventory);
+            this.farm.restoreField(data.fieldPlots);
+            this.currentBarnData = data.barnPlots;
+
+            Barn barn = getOrCreateBarn(this.player, this.farm, this.farm.getInventory());
+            barn.restoreBarn(data.barnPlots);
+
+            this.farm.refreshInventoryUI();
+            System.out.println("Chargement réussi");
+        }
     }
 }

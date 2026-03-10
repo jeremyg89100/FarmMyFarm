@@ -3,7 +3,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -11,6 +10,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory {
     @FXML Text tomatoSeed;
@@ -28,10 +29,12 @@ public class Inventory {
     @FXML Text money;
     @FXML Text cornSeed;
     @FXML Text corn;
+    @FXML private Button plot;
     private Player player;
     private FarmManager manager;
     private FarmableField farm;
     private Barn barn;
+    private Inventory inventory;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -43,6 +46,8 @@ public class Inventory {
 
     public void setFarm(FarmableField farm) {this.farm = farm;}
 
+    public void setBarn(Barn barn) { this.barn = barn; }
+
     public void openMarket() {
         marketButton.setOnMouseClicked(event -> {
             try {
@@ -52,10 +57,8 @@ public class Inventory {
                 Market marketController = loader.getController();
                 marketController.setPlayer(player);
                 marketController.setInventory(this);
-                marketController.displayMarket();
-
-                //For the refresh of the UI
                 marketController.setFarm(farm);
+                marketController.displayMarket();
 
                 Stage marketStage = new Stage();
                 marketStage.setTitle("Marché");
@@ -70,24 +73,9 @@ public class Inventory {
 
     public void openBarn() {
         barnButton.setOnMouseClicked(event -> {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/barn.fxml"));
-                Parent root = loader.load();
-
-                Barn barnController = loader.getController();
-                barnController.setPlayer(player);
-                barnController.setFarm(farm);
-                barnController.setInventory(this);
-                barnController.updateDisplayBarnInventory();
-
-                Stage barnStage = new Stage();
-                barnStage.setTitle("Etabli");
-                barnStage.setScene(new Scene(root, 755, 510));
-                barnStage.show();
-            } catch (IOException e) {
-                System.err.println("Impossible de charger le fichier FXML");
-                e.printStackTrace();
-            }
+            System.out.println("manager instance = " + manager.hashCode());
+            Barn barn = manager.getOrCreateBarn(player, farm, this);
+            barn.show();
         });
     }
 
@@ -117,5 +105,13 @@ public class Inventory {
             manager.setSelectedSeed(selectedVegetables);
             System.out.println("Select");
         }
+    }
+    //Save
+    public void handleSave() {
+        GameSaver saver = new GameSaver();
+
+        List<PlotSave> data = manager.getBarnData();
+
+        saver.saveAll(this.player, data, this.farm, "save");
     }
 }

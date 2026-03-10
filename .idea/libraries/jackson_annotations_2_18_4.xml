@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jackson-annotations-2.18.4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../Libs/JavaFX/jackson-annotations-2.18.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../Libs/JavaFX/jackson-core-2.18.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../Libs/JavaFX/jackson-databind-2.18.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

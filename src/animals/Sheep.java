@@ -6,10 +6,7 @@ public class Sheep extends Animal {
     }
 
     public boolean feed(String foodGiven) {
-        if (foodGiven == null || foodGiven.isEmpty()) {
-            return true;
-        }
-        return false;
+        return this.food.equals(foodGiven);
     }
 }
 

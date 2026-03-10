@@ -9,7 +9,6 @@ import javafx.scene.layout.Pane;
 
 public class MarketBarn {
         private Player player;
-        //private Vegetables vegetables;
         private FarmableField farm;
         private Barn barn;
 
@@ -51,11 +50,11 @@ public class MarketBarn {
             acheter.setOnAction(this::buyAnimal);
             root.getChildren().add(acheter);
 
-//            Button vendre = new Button("Vendre");
-//            vendre.setLayoutX(490);
-//            vendre.setLayoutY(200);
-//            vendre.setOnAction(this::sellVegetables);
-//            root.getChildren().add(vendre);
+            Button vendre = new Button("Vendre");
+            vendre.setLayoutX(490);
+            vendre.setLayoutY(200);
+            vendre.setOnAction(this::sellResources);
+            root.getChildren().add(vendre);
         }
 
         public void buyAnimal(ActionEvent event) {
@@ -71,25 +70,25 @@ public class MarketBarn {
             } else {System.out.println("Echec de l'achat");}
         }
 
-//        public void sellResources(ActionEvent event) {
-//            Animal select = market.getSelectionModel().getSelectedItem();
-//
-//            if (select != null) {
-//                String name = select.getName();
-//                if (player.getVegetableCount(name) > 0) {
-//                    player.money += select.sellingPrice;
-//                    player.removeVegetable(name);
-//
-//                    if (barn != null) {
-//                        barn.updateDisplay();
-//                    }
-//
-//                    if (farm != null) {
-//                        farm.refreshInventoryUI();
-//                    }
-//                } else {System.out.println("Echec de la vente");}
-//            }
-//        }
+        public void sellResources(ActionEvent event) {
+            Animal select = market.getSelectionModel().getSelectedItem();
+
+            if (select != null) {
+                String resourceName = select.resource;
+                if (player.getResourceCount(resourceName) > 0) {
+                    player.money += select.sellingPrice;
+                    player.removeVegetable(resourceName);
+
+                    if (barn != null) {
+                        barn.updateDisplayBarnInventory();
+                    }
+
+                    if (farm != null) {
+                        farm.refreshInventoryUI();
+                    }
+                } else {System.out.println("Echec de la vente, pas de " + resourceName);}
+            }
+        }
 
         public void setPlayer(Player player) {
             this.player = player;

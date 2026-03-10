@@ -6,8 +6,6 @@ public class Pig extends Animal {
     }
 
     public boolean feed(String foodGiven) {
-        if (foodGiven != null && !foodGiven.isEmpty()) {
-            return true;
-        } else return false;
+        return foodGiven != null && !foodGiven.isEmpty();
     }
 }

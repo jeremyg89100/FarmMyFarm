@@ -1,7 +1,6 @@
 import animals.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,12 +16,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import vegetables.*;
 
-import java.awt.*;
+import java.util.List;
 import java.io.IOException;
-
-import static java.awt.Color.red;
+import java.util.ArrayList;
 
 public class Barn {
     private Button[][] field = new Button[10][10];
@@ -35,7 +32,9 @@ public class Barn {
     private FarmableField farm;
     private FarmManager manager;
     private String selectedFoodName = "";
+    private Stage stage;
 
+    @FXML private Button plot;
     @FXML private SplitPane root;
     @FXML AnchorPane animalBarn;
     @FXML AnchorPane barn;
@@ -61,7 +60,13 @@ public class Barn {
     //Getter and Setter
     public void setPlayer(Player player) {this.player = player;}
 
+    public void setStage(Stage stage) { this.stage = stage; }
+
     public void setInventory(Inventory inventory) {this.inventory = inventory;}
+
+    public void setManager(FarmManager manager) { this.manager = manager; }
+
+    public void setSelectedFoodName(String foodName) { this.selectedFoodName = foodName;}
 
     public String getSelectedFoodName() { return selectedFoodName;}
 
@@ -70,9 +75,11 @@ public class Barn {
     public void setSelectedAnimal(String animalName) {
         this.selectedAnimalName = animalName;
     }
+
     public String getSelectedAnimalName() {
         return this.selectedAnimalName;
     }
+
     public Button getPlot(int row, int columns) {
         return field[row][columns];
     }
@@ -132,38 +139,45 @@ public class Barn {
                 player.money -= currentCost;
                 currentCost = 500 + (buyingField * (500 * 10 / 100));
                 plot.setGraphic(null);
+                manager.updateBarnData(convertBarnToData());
                 System.out.println(player.money);
                 updateDisplayBarnInventory();
+                farm.refreshInventoryUI();;
             } else System.out.println("Pas assez d'argent");
         }
         else {
             String animalName = getSelectedAnimalName();
             if (animalName != null && !animalName.isEmpty()) {
-                System.out.println("DEBUG: Essai de plantation " + animalName);
+                System.out.println("Test plantation " + animalName);
                 putAnimals(row, columns, animalName);
             } else {
-                System.out.println("DEBUG: Aucune graine sélectionnée dans le manager");
+                System.out.println("Test Aucune graine sélectionnée dans le manager");
             }
         }
    }
 
     public void updateDisplayBarnInventory() {
+        if (money == null) return;
         money.setFont(new Font("System", 20));
-        money.setText(player.getMoney() + " $");
-        tomato.setText("Tomate x" + player.getVegetableCount("Tomate"));
-        wheat.setText("Blé x" + player.getVegetableCount("Blé"));
-        eggplant.setText("Aubergine x" + player.getVegetableCount("Aubergine"));
-        bellpeper.setText("Poivron x" + player.getVegetableCount("Poivron"));
-        potato.setText("Patate x" + player.getVegetableCount("Patate"));
-        corn.setText("Mais x" + player.getVegetableCount("Mais"));
-        cow.setText("Vache x" +player.getAnimalCount("Vache"));
-        chicken.setText("Poule x" +player.getAnimalCount("Poule"));
-        pig.setText("Cochon x" +player.getAnimalCount("Cochon"));
-        sheep.setText("Mouton x" +player.getAnimalCount("Mouton"));
-        meat.setText("Viande x" +player.getResourceCount("Viande"));
-        milk.setText("Lait x" +player.getResourceCount("Lait"));
-        wool.setText("Laine x" +player.getResourceCount("Laine"));
-        egg.setText("Oeuf x" +player.getResourceCount("Oeuf"));
+        if (money != null) money.setText(player.getMoney() + " $");
+        if (tomato != null) tomato.setText("Tomate x" + player.getVegetableCount("Tomate"));
+        if (wheat != null) wheat.setText("Blé x" + player.getVegetableCount("Blé"));
+        if (eggplant != null) eggplant.setText("Aubergine x" + player.getVegetableCount("Aubergine"));
+        if (bellpeper != null) bellpeper.setText("Poivron x" + player.getVegetableCount("Poivron"));
+        if (potato != null) potato.setText("Patate x" + player.getVegetableCount("Patate"));
+        if (corn != null) corn.setText("Mais x" + player.getVegetableCount("Mais"));
+        if (cow != null) cow.setText("Vache x" +player.getAnimalCount("Vache"));
+        if (chicken != null) chicken.setText("Poule x" +player.getAnimalCount("Poule"));
+        if (pig != null) pig.setText("Cochon x" +player.getAnimalCount("Cochon"));
+        if (sheep != null)sheep.setText("Mouton x" +player.getAnimalCount("Mouton"));
+        if (meat != null)meat.setText("Viande x" +player.getResourceCount("Viande"));
+        if (milk != null) milk.setText("Lait x" +player.getResourceCount("Lait"));
+        if (wool != null) wool.setText("Laine x" +player.getResourceCount("Laine"));
+        if (egg != null) egg.setText("Oeuf x" +player.getResourceCount("Oeuf"));
+
+        if (plot != null) {
+            plot.setStyle("-fx-background-color: green;");
+        }
     }
 
     public void openMarketBarn() {
@@ -191,31 +205,55 @@ public class Barn {
         });
     }
 
+    public void show() {
+        if (stage != null) {
+            updateDisplayBarnInventory();
+            stage.show();
+        }
+    }
 
     //Animal
     public void tryToFeed(int row, int columns, Animal animal) {
         String food = getSelectedFoodName();
+        System.out.println("Test nourriture : " + food); // ← debug
 
         if (animal.feed(food)) {
-            System.out.println("L'animal a mangé");
-            player.removeVegetable(food);
+            String inventoryName = convertFoodNameToInventoryName(food);
+            player.removeVegetable(inventoryName);
             farm.refreshInventoryUI();
             updateDisplayBarnInventory();
-
             getPlot(row, columns).setOnAction(null);
-
             startGrowth(row, columns, animal);
         } else {
             System.out.println("Cet animal ne veut pas de : " + food);
         }
     }
 
+    private String convertFoodNameToInventoryName(String food) {
+        return switch (food) {
+            case "Wheat" -> "Blé";
+            case "Tomato" -> "Tomate";
+            case "Eggplant" -> "Aubergine";
+            case "Bellpeper" -> "Poivron";
+            case "Potato" -> "Patate";
+            case "Corn" -> "Mais";
+            default -> food;
+        };
+    }
     public void startGrowth(int row, int columns, Animal animal) {
+        PlotState newState = new PlotState(animal.getName(), 0);
+        getPlot(row, columns).setUserData(newState);
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             animal.currentGrowth++;
 
+            PlotState currentState = (PlotState) getPlot(row, columns).getUserData();
+            if (currentState != null) {
+                currentState.currentGrowth = animal.currentGrowth;
+            }
+
             if (animal.currentGrowth < animal.growthTime / 3) {
                 getPlot(row, columns).setStyle("-fx-background-color: #e74c3c;");
+
             } else if (animal.currentGrowth < animal.growthTime * 2 / 3) {
                 getPlot(row, columns).setStyle("-fx-background-color: #f1c40f;");
             }
@@ -240,8 +278,15 @@ public class Barn {
 
         if (barn != null) {
             setSelectedAnimal(selectedAnimal);
-            System.out.println("Select animal");
+            System.out.println("Select animal" + selectedAnimal);
         }
+    }
+
+    public void selectFood(MouseEvent event) {
+        ImageView selectedFoodView = (ImageView) event.getSource();
+        String food = (String) selectedFoodView.getUserData();
+        this.selectedFoodName = food;
+        System.out.println("Nourriture sélectionnée " + food);
     }
 
     public Animal createAnimalFromName(String animalName) {
@@ -263,13 +308,17 @@ public class Barn {
     public void putAnimals(int row, int columns, String animalName) {
         if (player.hasAnimal(animalName) && isBought[row][columns] && getPlot(row, columns).getGraphic() == null) {
             Animal newAnimal = createAnimalFromName(animalName);
+
+            PlotState state = new PlotState(animalName, 0);
+            getPlot(row, columns).setUserData(state);
+
             setPlotImg(row, columns, "/img/" + animalName + ".png");
             player.withdrawAnimal(animalName);
 
             getPlot(row, columns).setOnAction(event -> {
                 tryToFeed(row, columns, newAnimal);
             });
-
+            manager.updateBarnData(convertBarnToData());
             if (barn != null) {
                 updateDisplayBarnInventory();
             }
@@ -280,21 +329,133 @@ public class Barn {
         }
     }
 
-
     public void pickUpResources(int row, int columns, Animal animal) {
-        if (farm.getPlot(row, columns).getGraphic() == null) {
+        if (getPlot(row, columns).getGraphic() == null) {
             return;
         }
         player.addResourcesAfterGrowth(animal);
+        animal.life --;
         if (animal.life == 0) {
             getPlot(row, columns).setGraphic(null);
+            getPlot(row, columns).setUserData(null);
         }
 
         getPlot(row, columns).setOnMouseClicked(null);
 
         getPlot(row, columns).setOnAction(event -> {
-            buyingFieldBarn(row, columns);
+            String animalName = getSelectedAnimalName();
+            if (animalName != null && !animalName.isEmpty()) {
+                putAnimals(row, columns, animalName);
+            }
         });
+        updateDisplayBarnInventory();
+    }
+
+    // Save
+    public List<PlotSave> convertBarnToData() {
+        List<PlotSave> plotSaveList = new ArrayList<>();
+
+        for (int row = 0; row < 10; row++) {
+            for (int columns = 0; columns < 10 ; columns++) {
+                if(this.isBought[row][columns]) {
+                    PlotSave plotSave = new PlotSave();
+                    plotSave.row = row;
+                    plotSave.column = columns;
+                    plotSave.isBought = true;
+
+                    PlotState state = getPlotState(row, columns);
+
+                    if (state != null) {
+                        plotSave.itemName = state.itemName;
+                        plotSave.currentGrowth = state.currentGrowth;
+                    } else {
+                        plotSave.itemName = null;
+                        plotSave.currentGrowth = 0;
+                    }
+                    plotSaveList.add(plotSave);
+                }
+            }
+        }
+        return plotSaveList;
+    }
+
+    public PlotState getPlotState(int row, int col) {
+        Button plot = getPlot(row, col);
+        if (plot != null && plot.getUserData() instanceof PlotState) {
+            return (PlotState) plot.getUserData();
+        }
+        return null;
+    }
+
+    //Restore
+    public void restoreBarn(List<PlotSave> barnData) {
+        if (field[0][0] == null) {
+            System.err.println("Erreur, le tableau 'field' n'est pas initialisé !");
+            return;
+        }
+        // Making a new clean barnField with locks
+        for (int r = 0; r < 10; r++) {
+            for (int c = 0; c < 10; c++) {
+                resetBarnPlotUI(field[r][c]);
+                this.isBought[r][c] = false;
+            }
+        }
+
+        //If the plot was bought, get rid of the lock
+        for (PlotSave plot : barnData) {
+            this.isBought[plot.row][plot.column] = true;
+            Button currentButton = field[plot.row][plot.column];
+            currentButton.setGraphic(null);
+            currentButton.setStyle("-fx-background-color: #27ae60; -fx-background-radius: 0;");
+
+            // If there was an animal, put it on the plot
+            if (plot.itemName != null) {
+                Animal animal = createAnimalFromName(plot.itemName);
+                if (animal != null) {
+                    animal.currentGrowth = plot.currentGrowth;
+                    setPlotImg(plot.row, plot.column, "/img/" + plot.itemName + ".png");
+                    currentButton.setUserData(new PlotState(plot.itemName, plot.currentGrowth));
+                    final int r = plot.row, c = plot.column;
+                    currentButton.setOnAction(event -> tryToFeed(r, c, animal));
+                }
+            }
+        }
+    }
+
+    public void resetBarnPlotUI(Button plot) {
+        if (plot == null) {
+            return;
+        }
+
+        plot.setStyle("-fx-background-color: linear-gradient(to bottom right, #2ecc71 0%, #27ae60 50%, #1e8449 100%); " +
+                "-fx-background-radius: 0;");
+
+        try {
+            Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
+            ImageView lockView = new ImageView(lock);
+            lockView.setFitHeight(20);
+            lockView.setPreserveRatio(true);
+            plot.setGraphic(lockView);
+        } catch (Exception e) {
+            System.err.println("Erreur : Impossible de charger l'image du cadenas.");
+            plot.setGraphic(null);
+        }
+
+        plot.setUserData(null);
+        //Get the emplacement of the plot and put back the onAction to buy the plot
+        plot.setOnAction(event -> {
+            Integer rowIndex = GridPane.getRowIndex(plot);
+            Integer colIndex = GridPane.getColumnIndex(plot);
+            if (rowIndex != null && colIndex != null) {
+                buyingFieldBarn(rowIndex, colIndex);
+            }
+        });
+    }
+
+    public void initData(Player player, FarmableField farm, Inventory inventory) {
+        this.player = player;
+        this.farm = farm;
+        this.inventory = inventory;
         updateDisplayBarnInventory();
     }
 

@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import vegetables.Vegetables;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FarmableField {
     private Market market;
@@ -25,6 +27,7 @@ public class FarmableField {
     private int buyingField = 0;
     private int currentCost = 500;
     private boolean[][] isBought = new boolean[15][15];
+    private Barn barn;
 
     @FXML public AnchorPane land;
     @FXML public AnchorPane inventoryControl;
@@ -37,6 +40,10 @@ public class FarmableField {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public void setBarn(Barn barn) { this.barn = barn; }
+
+    public Inventory getInventory() { return this.inventory; }
 
     public Button getPlot(int row, int columns) {
         return field[row][columns];
@@ -114,6 +121,8 @@ public class FarmableField {
             this.inventory.setFarm(this);
             this.inventory.updateDisplay();
 
+            this.inventory.setBarn(barn);
+
 
             inventoryControl.getChildren().add(inventoryNode);
 
@@ -127,8 +136,91 @@ public class FarmableField {
         if (inventory != null) {
             inventory.updateDisplay();
         } else {
-            System.out.println("ERREUR : L'objet 'inventory' est null dans FarmableField !");
+            System.out.println("L'objet 'inventory' est null dans FarmableField ");
         }
+    }
+
+    //Save
+
+    public List<PlotSave> convertFieldToData() {
+        List<PlotSave> plotSaveList = new ArrayList<>();
+
+        for (int row = 0; row < 15; row++) {
+            for (int columns = 0; columns < 15 ; columns++) {
+                if(this.isBought[row][columns]) {
+                    PlotSave plotSave = new PlotSave();
+                    plotSave.row = row;
+                    plotSave.column = columns;
+                    plotSave.isBought = true;
+
+                    PlotState state = getPlotState(row, columns);
+
+                    if (state != null) {
+                        plotSave.itemName = state.itemName;
+                        plotSave.currentGrowth = state.currentGrowth;
+                    } else {
+                        plotSave.itemName = null;
+                        plotSave.currentGrowth = 0;
+                    }
+                    plotSaveList.add(plotSave);
+                }
+            }
+        }
+        return plotSaveList;
+    }
+
+    public PlotState getPlotState(int row, int col) {
+        Button plot = getPlot(row, col);
+        if (plot != null && plot.getUserData() instanceof PlotState) {
+            return (PlotState) plot.getUserData();
+        }
+        return null;
+    }
+
+    //Restore
+    public void restoreField(List<PlotSave> fieldData) {
+        for (int r = 0; r < 15; r++) {
+            for (int c = 0; c < 15; c++) {
+                resetPlotUI(field[r][c]);
+                this.isBought[r][c] = false;
+            }
+        }
+
+        for (PlotSave plot : fieldData) {
+            this.isBought[plot.row][plot.column] = true;
+
+            Button currentButton = field[plot.row][plot.column];
+            currentButton.setGraphic(null);
+            currentButton.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+            if (plot.itemName != null) {
+                String seedName = manager.convertVegetableNameToSeedName(plot.itemName);
+                Vegetables vegetable = manager.createVegetableFromName(seedName);
+
+                if (vegetable == null) {
+                    System.err.println("Légume introuvable pour : " + plot.itemName);
+                    continue;
+                }
+
+                vegetable.currentGrowth = plot.currentGrowth;
+                field[plot.row][plot.column].setUserData(new PlotState(plot.itemName, vegetable.currentGrowth));
+                manager.growthVegetables(plot.row, plot.column, vegetable);
+            }
+        }
+    }
+
+    public void resetPlotUI(Button plot) {
+        plot.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #8B4513, #6F370F); -fx-background-radius: 0;");
+
+        Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
+        ImageView lockView = new ImageView(lock);
+        lockView.setFitHeight(20);
+        lockView.setPreserveRatio(true);
+        plot.setGraphic(lockView);
+
+        plot.setUserData(null);
+        plot.setOnAction(event -> {
+            buyingField(GridPane.getRowIndex(plot), GridPane.getColumnIndex(plot));
+        });
     }
 
     public void initialize() {
