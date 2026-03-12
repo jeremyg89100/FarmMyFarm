@@ -100,20 +100,21 @@ public class Barn {
 
     // Barn
     public void barnField() {
-        double btnWidth = 58;
+        double btnWidth = 57;
         double btnHeight = 34;
 
         Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
 
         barnField.setHgap(2);
         barnField.setVgap(2);
+        barnField.setAlignment(Pos.CENTER);
 
         for (int row = 0; row < 10; row++ ) {
             for (int columns = 0; columns < 10 ; columns++) {
                 Button plot = new Button();
                 plot.setMinWidth(btnWidth);
                 plot.setMinHeight(btnHeight);
-                plot.setStyle("-fx-background-color: rgba(173,235,179 0.5);" +
+                plot.setStyle("-fx-background-color: rgba(173,235,179, 0.5);" +
                         "-fx-background-radius: 0; " +
                         "-fx-border-color: rgba(0,0,0,0.1); " +
                         "-fx-border-width: 0.5;");
@@ -128,7 +129,6 @@ public class Barn {
                         "-fx-background-position: left;");
 
                 field[row][columns] = plot;
-                barnField.setAlignment(Pos.CENTER);
                 barnField.add(plot, columns, row);
 
                 final int r = row;
@@ -151,7 +151,6 @@ public class Barn {
                 currentCost = 500 + (buyingField * (500 * 10 / 100));
                 plot.setGraphic(null);
                 manager.updateBarnData(convertBarnToData());
-                System.out.println(player.money);
                 updateDisplayBarnInventory();
                 farm.refreshInventoryUI();;
             } else System.out.println("Pas assez d'argent");
@@ -159,7 +158,6 @@ public class Barn {
         else {
             String animalName = getSelectedAnimalName();
             if (animalName != null && !animalName.isEmpty()) {
-                System.out.println("Test plantation " + animalName);
                 putAnimals(row, columns, animalName);
             } else {
                 System.out.println("Test Aucune graine sélectionnée dans le manager");
@@ -362,22 +360,37 @@ public class Barn {
         if (getPlot(row, columns).getGraphic() == null) {
             return;
         }
+
         player.addResourcesAfterGrowth(animal);
-        animal.life --;
-        if (animal.life == 0) {
+
+        getPlot(row, columns).setStyle("-fx-background-color: rgba(173,235,179, 0.5);" +
+                "-fx-background-radius: 0; " +
+                "-fx-border-color: rgba(0,0,0,0.1); " +
+                "-fx-border-width: 0.5;");
+
+        animal.life--;
+
+        if (animal.life <= 0) {
             getPlot(row, columns).setGraphic(null);
             getPlot(row, columns).setUserData(null);
+
+            getPlot(row, columns).setOnAction(event -> {
+                String animalName = getSelectedAnimalName();
+                if (animalName != null && !animalName.isEmpty()) {
+                    putAnimals(row, columns, animalName);
+                }
+            });
+        } else {
+            PlotState state = (PlotState) getPlot(row, columns).getUserData();
+            if (state != null) state.currentGrowth = 0;
+            animal.currentGrowth = 0;
+
+            getPlot(row, columns).setOnAction(event -> {
+                tryToFeed(row, columns, animal);
+            });
         }
-
-        getPlot(row, columns).setOnMouseClicked(null);
-
-        getPlot(row, columns).setOnAction(event -> {
-            String animalName = getSelectedAnimalName();
-            if (animalName != null && !animalName.isEmpty()) {
-                putAnimals(row, columns, animalName);
-            }
-        });
         updateDisplayBarnInventory();
+        manager.updateBarnData(convertBarnToData());
     }
 
     // Save

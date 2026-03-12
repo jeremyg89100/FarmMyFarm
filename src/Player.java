@@ -13,7 +13,7 @@ public class Player {
 
     public Player(String name) {
         this.name = name;
-        this.money = 2000000;
+        this.money = 10000;
     }
 
     public void addSeed(Vegetables vegetables) {
