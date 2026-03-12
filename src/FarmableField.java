@@ -103,7 +103,6 @@ public class FarmableField {
         else {
             String seed = manager.getSelectedSeedName();
             if (seed != null && !seed.isEmpty()) {
-                System.out.println("Essai de plantation " + seed);
                 manager.plant(row, columns, seed);
             } else {
                 System.out.println("Aucune graine sélectionnée dans le manager");
@@ -136,8 +135,6 @@ public class FarmableField {
     public void refreshInventoryUI() {
         if (inventory != null) {
             inventory.updateDisplay();
-        } else {
-            System.out.println("L'objet 'inventory' est null dans FarmableField ");
         }
     }
 

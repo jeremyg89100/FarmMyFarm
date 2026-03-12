@@ -42,8 +42,6 @@ public class FarmManager {
     public void setBarn(Barn barn) { this.barn = barn; }
 
     public Barn getOrCreateBarn(Player player, FarmableField farm, Inventory inventory) {
-        System.out.println("FarmManager instance = " + this.hashCode());
-        System.out.println("barnInstance = " + barnInstance);
         if (barnInstance == null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/barn.fxml"));

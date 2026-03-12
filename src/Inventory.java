@@ -80,7 +80,6 @@ public class Inventory {
 
     public void openBarn() {
         barnButton.setOnMouseClicked(event -> {
-            System.out.println("manager instance = " + manager.hashCode());
             Barn barn = manager.getOrCreateBarn(player, farm, this);
             barn.show();
         });

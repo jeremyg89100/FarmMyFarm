@@ -21,7 +21,6 @@ public class Player {
 
         int currentAmount = inventory.getOrDefault(name, 0);
         inventory.put(name, currentAmount + 1);
-        System.out.println("Inventaire : " + name + " possède maintenant " + (currentAmount + 1) + " graines.");
     }
 
     public void addAnimal(Animal animal) {
@@ -74,14 +73,12 @@ public class Player {
         String name = vegetables.name;
         int currentAmount = inventory.getOrDefault(name, 0);
         inventory.put(name, currentAmount + 1);
-        System.out.println("Inventaire : " + name + " possède maintenant " + (currentAmount + 1));
     }
 
     public void removeVegetable(String name) {
         int currentAmount = inventory.getOrDefault(name, 0);
         if (currentAmount > 0) {
             inventory.put(name, currentAmount - 1);
-            System.out.println("Vente effectué, votre solde : " + money);
         } else System.out.println("Vous n'avez pas ce produit à vendre");
     }
 
@@ -89,7 +86,6 @@ public class Player {
         String resource = animal.resource;
         int currentAmount = inventory.getOrDefault(resource, 0);
         inventory.put(resource, currentAmount + 1);
-        System.out.println("Inventaire : " + resource + " possède maintenant " + (currentAmount + 1));
     }
 
     //Save

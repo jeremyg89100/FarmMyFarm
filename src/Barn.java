@@ -224,7 +224,6 @@ public class Barn {
     //Animal
     public void tryToFeed(int row, int columns, Animal animal) {
         String food = getSelectedFoodName();
-        System.out.println("Test nourriture : " + food); // ← debug
 
         if (animal.feed(food)) {
             String inventoryName = convertFoodNameToInventoryName(food);
