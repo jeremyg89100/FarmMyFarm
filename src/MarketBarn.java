@@ -11,6 +11,7 @@ public class MarketBarn {
         private Player player;
         private FarmableField farm;
         private Barn barn;
+        private View view = new View();
 
         @FXML private Pane root;
         @FXML private TableView<Animal> market;
@@ -43,17 +44,19 @@ public class MarketBarn {
             // Make the height of each cell bigger
             market.setFixedCellSize(50);
 
-            Button acheter = new Button("Acheter");
+            Button acheter = new Button("");
             acheter.setId("acheter");
-            acheter.setLayoutX(490);
+            acheter.setLayoutX(460);
             acheter.setLayoutY(100);
             acheter.setOnAction(this::buyAnimal);
+            view.viewButton(acheter, 40, 70, "Acheter");
             root.getChildren().add(acheter);
 
             Button vendre = new Button("Vendre");
-            vendre.setLayoutX(490);
+            vendre.setLayoutX(460);
             vendre.setLayoutY(200);
             vendre.setOnAction(this::sellResources);
+            view.viewButton(vendre, 40, 70, "Vendre");
             root.getChildren().add(vendre);
         }
 
@@ -92,6 +95,10 @@ public class MarketBarn {
 
         public void setPlayer(Player player) {
             this.player = player;
+        }
+        public void initialize() {
+            view.viewMarketTableView(market);
+            view.viewMarketTableView(root);
         }
     }
 

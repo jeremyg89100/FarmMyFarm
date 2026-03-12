@@ -3,20 +3,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.List;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +35,8 @@ public class Barn {
     private FarmManager manager;
     private String selectedFoodName = "";
     private Stage stage;
+    private View view = new View();
+    private ImageView lastSelected;
 
     @FXML private Button plot;
     @FXML private SplitPane root;
@@ -56,6 +60,8 @@ public class Barn {
     @FXML Text wool;
     @FXML Text egg;
     @FXML Text meat;
+    @FXML AnchorPane animalBarn3;
+    @FXML SplitPane animalBarn2;
 
     //Getter and Setter
     public void setPlayer(Player player) {this.player = player;}
@@ -94,8 +100,8 @@ public class Barn {
 
     // Barn
     public void barnField() {
-        double btnWidth = 59.0;
-        double btnHeight = 34.5;
+        double btnWidth = 58;
+        double btnHeight = 34;
 
         Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
 
@@ -107,7 +113,7 @@ public class Barn {
                 Button plot = new Button();
                 plot.setMinWidth(btnWidth);
                 plot.setMinHeight(btnHeight);
-                plot.setStyle("-fx-background-color: linear-gradient(to bottom right, #2ecc71 0%, #27ae60 50%, #1e8449 100%); " +
+                plot.setStyle("-fx-background-color: rgba(173,235,179 0.5);" +
                         "-fx-background-radius: 0; " +
                         "-fx-border-color: rgba(0,0,0,0.1); " +
                         "-fx-border-width: 0.5;");
@@ -116,8 +122,13 @@ public class Barn {
                 lockView.setFitHeight(20);
                 lockView.setPreserveRatio(true);
                 plot.setGraphic(lockView);
+                animalBarn2.setStyle("-fx-background-image: url('/img/barnField2.jpg');" +
+                        "-fx-background-size: 661px 510px ; " +
+                        "-fx-background-repeat: no-repeat; " +
+                        "-fx-background-position: left;");
 
                 field[row][columns] = plot;
+                barnField.setAlignment(Pos.CENTER);
                 barnField.add(plot, columns, row);
 
                 final int r = row;
@@ -176,7 +187,7 @@ public class Barn {
         if (egg != null) egg.setText("Oeuf x" +player.getResourceCount("Oeuf"));
 
         if (plot != null) {
-            plot.setStyle("-fx-background-color: green;");
+            plot.setStyle("-fx-background-color: rgba(80,200,120, 0.5)");
         }
     }
 
@@ -273,12 +284,19 @@ public class Barn {
 
     public void selectAnimal(MouseEvent event) {
         ImageView selectedAnimalView = (ImageView) event.getSource();
-
         String selectedAnimal = (String) selectedAnimalView.getUserData();
 
         if (barn != null) {
+            if (lastSelected != null) {
+                lastSelected.setEffect(null); // ou setStyle("")
+            }
+            lastSelected = selectedAnimalView;
             setSelectedAnimal(selectedAnimal);
-            System.out.println("Select animal" + selectedAnimal);
+            DropShadow border = new DropShadow();
+            border.setColor(Color.WHITE);
+            border.setRadius(5);
+            border.setSpread(1.0);
+            selectedAnimalView.setEffect(border);
         }
     }
 
@@ -286,7 +304,18 @@ public class Barn {
         ImageView selectedFoodView = (ImageView) event.getSource();
         String food = (String) selectedFoodView.getUserData();
         this.selectedFoodName = food;
-        System.out.println("Nourriture sélectionnée " + food);
+
+        if (lastSelected != null) {
+            lastSelected.setEffect(null);
+        }
+
+        lastSelected = selectedFoodView;
+        setSelectedAnimal(food);
+        DropShadow border = new DropShadow();
+        border.setColor(Color.WHITE);
+        border.setRadius(5);
+        border.setSpread(1.0);
+        selectedFoodView.setEffect(border);
     }
 
     public Animal createAnimalFromName(String animalName) {
@@ -406,7 +435,7 @@ public class Barn {
             this.isBought[plot.row][plot.column] = true;
             Button currentButton = field[plot.row][plot.column];
             currentButton.setGraphic(null);
-            currentButton.setStyle("-fx-background-color: #27ae60; -fx-background-radius: 0;");
+            currentButton.setStyle("-fx-background-color: rgba(80,200,120, 0.5)");
 
             // If there was an animal, put it on the plot
             if (plot.itemName != null) {
@@ -427,8 +456,10 @@ public class Barn {
             return;
         }
 
-        plot.setStyle("-fx-background-color: linear-gradient(to bottom right, #2ecc71 0%, #27ae60 50%, #1e8449 100%); " +
-                "-fx-background-radius: 0;");
+        plot.setStyle("-fx-background-color: rgba(173,235,179, 0.5);" +
+                "-fx-background-radius: 0; " +
+                "-fx-border-color: rgba(0,0,0,0.1); " +
+                "-fx-border-width: 0.5;");
 
         try {
             Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
@@ -462,5 +493,8 @@ public class Barn {
     @FXML
     public void initialize() {
         barnField();
+        view.viewButton(buyingAnimals, 40, 80, "Ferme");
+        view.viewBarnInventory(barn);
+        view.viewBarnAnimalInventory(animalBarn3);
     }
 }

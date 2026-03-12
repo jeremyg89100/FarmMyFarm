@@ -10,9 +10,9 @@ import vegetables.*;
 
 public class Market {
     private Player player;
-    //private Vegetables vegetables;
     private FarmableField farm;
     private Inventory inventory;
+    private View view = new View();
 
     @FXML private Pane root;
     @FXML private TableView<Vegetables> market;
@@ -49,17 +49,19 @@ public class Market {
         // Make the height of each cell bigger
         market.setFixedCellSize(50);
 
-        Button acheter = new Button("Acheter");
+        Button acheter = new Button("");
         acheter.setId("acheter");
-        acheter.setLayoutX(490);
+        acheter.setLayoutX(450);
         acheter.setLayoutY(100);
         acheter.setOnAction(this::buySeed);
+        view.viewButton(acheter, 40, 80, "Acheter");
         root.getChildren().add(acheter);
 
-        Button vendre = new Button("Vendre");
-        vendre.setLayoutX(490);
+        Button vendre = new Button("");
+        vendre.setLayoutX(450);
         vendre.setLayoutY(200);
         vendre.setOnAction(this::sellVegetables);
+        view.viewButton(vendre, 40, 70, "Vendre");
         root.getChildren().add(vendre);
     }
 
@@ -98,5 +100,10 @@ public class Market {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void initialize() {
+        view.viewMarketTableView(market);
+        view.viewMarketTableView(root);
     }
 }

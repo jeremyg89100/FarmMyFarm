@@ -55,7 +55,7 @@ public class FarmManager {
                 Stage barnStage = new Stage();
                 barnStage.setTitle("Etabli");
                 barnStage.setScene(new Scene(root, 755, 510));
-                barnStage.setOnCloseRequest(e -> barnStage.hide()); // hide instead of destroy
+                barnStage.setOnCloseRequest(e -> barnStage.hide());
                 barnInstance.setStage(barnStage);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -151,7 +151,7 @@ public class FarmManager {
         }
         player.addVegetablesAfterGrowth(vege);
         farm.getPlot(row, columns).setGraphic(null);
-        farm.getPlot(row, columns).setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+        farm.getPlot(row, columns).setStyle("-fx-background-color: rgba(160, 82, 45, 0.7); -fx-background-radius: 0;");
 
         farm.getPlot(row, columns).setOnMouseClicked(null);
 

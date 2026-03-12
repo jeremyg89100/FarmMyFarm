@@ -2,15 +2,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Lobby {
+    private View view = new View();
     @FXML Pane lobbyRoot;
     @FXML Button loadButton;
-    @FXML Button newGameButton;
+    @FXML Text title;
+
 
     public void handleLoadGame() {
         try {
@@ -45,5 +50,25 @@ public class Lobby {
 
         barn.setPlayer(player);
         barn.setFarm(farm);
+    }
+
+    public void lobbyBackground() {
+        lobbyRoot.setStyle("-fx-background-image: url('/img/lobby.jpg');" +
+                "-fx-background-size: cover;" +
+                "-fx-background-position: center;"
+                );
+        title.setText("Farm my Farm");
+        title.setStyle("-fx-font-family: 'Consolas'; -fx-font-size: 50px; -fx-fill: white;");
+
+        if (!lobbyRoot.getChildren().contains(title)) {
+            lobbyRoot.getChildren().add(title);
+        }
+
+    }
+
+    @FXML
+    public void initialize() {
+        lobbyBackground();
+        view.viewButton(loadButton, 53, 109, "Charger");
     }
 }

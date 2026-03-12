@@ -13,7 +13,7 @@
                 </GridPane>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="inventoryControl" minHeight="0.0" minWidth="0.0">
+        <AnchorPane fx:id="inventoryControl" stylesheets="@../style.css" minHeight="0.0" minWidth="0.0">
         </AnchorPane>
     </items>
 </SplitPane>

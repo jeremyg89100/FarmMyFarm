@@ -1,0 +1,28 @@
+.table-view .table-cell {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-font-family: "Consolas";
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(0, 150, 200, 0.5);
+}
+
+.column-header .label {
+    -fx-padding: 10 0 10 0;
+    -fx-text-fill: white;
+}

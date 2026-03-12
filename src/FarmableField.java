@@ -63,9 +63,10 @@ public class FarmableField {
                 Button plot = new Button();
                 plot.setMinWidth(btnWidth);
                 plot.setMinHeight(btnHeight);
-                plot.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #8B4513, #6F370F); " +
+                plot.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, " +
+                        "rgba(139, 69, 19, 0.5), rgba(111, 55, 15, 0.5)); " +
                         "-fx-background-radius: 0;");
-                land.setStyle("-fx-background-color: green");
+                land.setStyle("-fx-background-image: url('/img/farmField.jpg');");
 
                 ImageView lockView = new ImageView(lock);
                 lockView.setFitHeight(20);
@@ -95,7 +96,7 @@ public class FarmableField {
                 refreshInventoryUI();
                 currentCost = 500 + (buyingField * (500 * 10 / 100));
                 plot.setGraphic(null);
-                plot.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+                plot.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0; -fx-opacity: 0.5");
                 System.out.println(player.money);
             } else System.out.println("Pas assez d'argent");
         }
@@ -191,7 +192,7 @@ public class FarmableField {
 
             Button currentButton = field[plot.row][plot.column];
             currentButton.setGraphic(null);
-            currentButton.setStyle("-fx-background-color: #A0522D; -fx-background-radius: 0;");
+            currentButton.setStyle("-fx-background-color: rgba(160, 82, 45, 0.7); -fx-background-radius: 0;");
             if (plot.itemName != null) {
                 String seedName = manager.convertVegetableNameToSeedName(plot.itemName);
                 Vegetables vegetable = manager.createVegetableFromName(seedName);
@@ -209,7 +210,9 @@ public class FarmableField {
     }
 
     public void resetPlotUI(Button plot) {
-        plot.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #8B4513, #6F370F); -fx-background-radius: 0;");
+        plot.setStyle("-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, " +
+                "rgba(139, 69, 19, 0.5), rgba(111, 55, 15, 0.5)); " +
+                "-fx-background-radius: 0;");
 
         Image lock = new Image(getClass().getResourceAsStream("/img/lock.png"));
         ImageView lockView = new ImageView(lock);

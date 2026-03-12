@@ -4,9 +4,10 @@
 <?import javafx.scene.layout.Pane?>
 
 
+<?import javafx.scene.text.Text?>
 <Pane fx:controller="Lobby" fx:id="lobbyRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="loadButton" onAction="#handleLoadGame" layoutX="248.0" layoutY="119.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="109.0" text="Charger" />
-      <Button fx:id="newGameButton" layoutX="248.0" layoutY="215.0" lineSpacing="1.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="109.0" text="Nouvelle Partie" textOverrun="CLIP" />
+      <Button fx:id="loadButton" onAction="#handleLoadGame" layoutX="380.0" layoutY="450.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="109.0" text="Charger" />
+      <Text fx:id="title" layoutX="280.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" fill="white" style="-fx-font-family: 'Consolas';"/>
    </children>
 </Pane>

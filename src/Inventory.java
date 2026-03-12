@@ -3,8 +3,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -14,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Inventory {
+    View view = new View();
     @FXML Text tomatoSeed;
     @FXML Text eggplantSeed;
     @FXML Text potatoSeed;
@@ -29,12 +33,15 @@ public class Inventory {
     @FXML Text money;
     @FXML Text cornSeed;
     @FXML Text corn;
+    @FXML Button save;
+    @FXML Pane inventoryPane;
     @FXML private Button plot;
     private Player player;
     private FarmManager manager;
     private FarmableField farm;
     private Barn barn;
     private Inventory inventory;
+    private ImageView lastSelected;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -103,9 +110,22 @@ public class Inventory {
 
         if (manager != null) {
             manager.setSelectedSeed(selectedVegetables);
-            System.out.println("Select");
         }
+
+        if (lastSelected != null) {
+            lastSelected.setEffect(null);
+        }
+
+        manager.setSelectedSeed(selectedVegetables);
+        lastSelected = selectedSeed;
+
+        DropShadow border = new DropShadow();
+        border.setColor(Color.WHITE);
+        border.setRadius(5);
+        border.setSpread(1.0);
+        selectedSeed.setEffect(border);
     }
+
     //Save
     public void handleSave() {
         GameSaver saver = new GameSaver();
@@ -113,5 +133,12 @@ public class Inventory {
         List<PlotSave> data = manager.getBarnData();
 
         saver.saveAll(this.player, data, this.farm, "save");
+    }
+
+    public void initialize() {
+        view.viewButton(save, 40, 100, "Sauvegarder" );
+        view.viewButton(marketButton, 40, 80, "Marché");
+        view.viewButton(barnButton, 40, 80, "Etabli");
+        view.viewInventoryBack(inventoryPane, 2000, 500);
     }
 }
