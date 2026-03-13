@@ -152,7 +152,7 @@ public class Barn {
                 plot.setGraphic(null);
                 manager.updateBarnData(convertBarnToData());
                 updateDisplayBarnInventory();
-                farm.refreshInventoryUI();;
+                farm.refreshInventoryUI();
             } else System.out.println("Pas assez d'argent");
         }
         else {
@@ -307,7 +307,7 @@ public class Barn {
         }
 
         lastSelected = selectedFoodView;
-        setSelectedAnimal(food);
+        setSelectedFoodName(food);
         DropShadow border = new DropShadow();
         border.setColor(Color.WHITE);
         border.setRadius(5);
